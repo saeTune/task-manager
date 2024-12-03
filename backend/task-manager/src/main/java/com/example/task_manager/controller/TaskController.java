@@ -24,17 +24,17 @@ public class TaskController {
     @Autowired
     private TaskRepository taskRepository;
 
-    @GetMapping
+    @GetMapping//取得リクエスト
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping//送信リクエスト
     public Task createTask(@RequestBody Task task) {
         return taskRepository.save(task);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}")//更新リクエスト
     public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
         return taskRepository.findById(id).map(task -> {
             task.setTitle(updatedTask.getTitle());
@@ -47,5 +47,12 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskRepository.deleteById(id);
+    }
+
+    // 優先度のバリデーション
+    private void validatePriority(String priority) {
+        if (priority == null || (!priority.equals("High") && !priority.equals("Medium") && !priority.equals("Low"))) {
+            throw new IllegalArgumentException("Invalid priority value. Allowed values: High, Medium, Low.");
+        }
     }
 }

@@ -4,16 +4,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 
 @Entity
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
+    private Long id;
     private String title;
     private String description;
     private boolean completed;
+    private String priority;
+
+    @PrePersist
+    public void setDefaultPriority() {
+        if (this.priority == null) {
+            this.priority = "Medium"; // デフォルトを"Medium"に設定
+        }
+    }
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -27,4 +36,7 @@ public class Task {
 
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
+
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) {this.priority = priority; }
 }
