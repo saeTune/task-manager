@@ -4,13 +4,14 @@ const apiUrl = "http://localhost:8080/api/tasks"; // Spring BootサーバーのU
 document.getElementById("addTaskBtn").addEventListener("click", function () {
   const title = document.getElementById("taskTitle").value;
   const description = document.getElementById("taskDescription").value;
+  const priority = document.getElementById("taskPriority").value; //優先度
 
   if (!title) {
     alert("Task title is required!");
     return;
   }
 
-  const newTask = { title, description, completed: false };
+  const newTask = { title, description, completed: false, priority };
 
   // バックエンドにPOSTリクエストを送信
   fetch(apiUrl, {
@@ -31,6 +32,7 @@ document.getElementById("addTaskBtn").addEventListener("click", function () {
   // フォームのリセット
   document.getElementById("taskTitle").value = "";
   document.getElementById("taskDescription").value = "";
+  document.getElementById("taskPriority").value = "Medium";
 });
 
 // タスクを取得して表示
@@ -53,6 +55,7 @@ function addTaskToUI(task) {
       <div>
         <strong>${task.title}</strong>
         <p>${task.description}</p>
+        <p>Priority: ${task.priority}</p>
       </div>
       <button class="delete-btn">Delete</button>
     `;
